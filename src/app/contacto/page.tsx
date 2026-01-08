@@ -69,7 +69,7 @@ export default function Contacto(): React.JSX.Element {
                                     <div className={styles.contactItemIcon}>📞</div>
                                     <div className={styles.contactItemText}>
                                         <h4>Teléfono</h4>
-                                        <p>+1 (555) 123-4567</p>
+                                        <p>+51 902 147 276</p>
                                     </div>
                                 </div>
 
