@@ -61,7 +61,7 @@ export default function Contacto(): React.JSX.Element {
                                     <div className={styles.contactItemIcon}>✉️</div>
                                     <div className={styles.contactItemText}>
                                         <h4>Email</h4>
-                                        <p>contacto@elevacultura.com</p>
+                                        <p>Yoveracheroomayra@gmail.com</p>
                                     </div>
                                 </div>
 
