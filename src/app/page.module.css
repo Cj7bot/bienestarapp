@@ -1414,6 +1414,27 @@
     padding: 12px 14px;
     font-size: 0.95rem;
   }
+
+  .contactItemText p {
+    font-size: 0.85rem;
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .contactItemText h4 {
+    font-size: 0.8rem;
+  }
+
+  .contactItem {
+    gap: 14px;
+  }
+
+  .contactItemIcon {
+    width: 44px;
+    height: 44px;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
 }
 
 /* Small mobile */
@@ -1441,6 +1462,25 @@
 
   .contactFormContainer {
     padding: 20px 14px;
+  }
+
+  .contactItemText p {
+    font-size: 0.85rem;
+  }
+
+  .contactItemText h4 {
+    font-size: 0.75rem;
+  }
+
+  .contactItemIcon {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+
+  .contactItem {
+    gap: 12px;
+    padding: 14px;
   }
 }
 
