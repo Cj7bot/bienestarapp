@@ -35,6 +35,13 @@ export default function Funciones(): React.JSX.Element {
                                 garantizando respuestas honestas y transparentes. Nuestro sistema
                                 asegura la privacidad total de cada colaborador.
                             </p>
+                            <a
+                                target="_blank"
+                                href="https://forms.gle/JKx7QbUEX2Jh3sP7A"
+                                className="survey-link"
+                            >
+                                Completar la encuesta →
+                            </a>
                         </div>
 
                         <div className={styles.featureCard}>

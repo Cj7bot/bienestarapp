@@ -3,6 +3,11 @@
 import { useState } from "react";
 import styles from "../page.module.css";
 
+interface SubmitStatus {
+    type: 'idle' | 'loading' | 'success' | 'error';
+    message: string;
+}
+
 export default function Contacto(): React.JSX.Element {
     const [formData, setFormData] = useState({
         name: "",
@@ -10,18 +15,55 @@ export default function Contacto(): React.JSX.Element {
         company: "",
         message: "",
     });
+    const [isLoading, setIsLoading] = useState(false);
+    const [submitStatus, setSubmitStatus] = useState<SubmitStatus>({
+        type: 'idle',
+        message: ''
+    });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { id, value } = e.target;
         setFormData((prev) => ({ ...prev, [id]: value }));
+        // Limpiar mensaje de error cuando el usuario empieza a escribir
+        if (submitStatus.type === 'error') {
+            setSubmitStatus({ type: 'idle', message: '' });
+        }
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // Aquí iría la lógica de envío del formulario
-        console.log("Form submitted:", formData);
-        alert("¡Gracias por tu mensaje! Te contactaremos pronto.");
-        setFormData({ name: "", email: "", company: "", message: "" });
+        setIsLoading(true);
+        setSubmitStatus({ type: 'loading', message: 'Enviando mensaje...' });
+
+        try {
+            const response = await fetch('/api/send', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || 'Error al enviar el mensaje');
+            }
+
+            setSubmitStatus({
+                type: 'success',
+                message: '¡Gracias por tu mensaje! Te hemos enviado un correo de confirmación y te contactaremos pronto.'
+            });
+            setFormData({ name: "", email: "", company: "", message: "" });
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            setSubmitStatus({
+                type: 'error',
+                message: error instanceof Error ? error.message : 'Hubo un error al enviar tu mensaje. Por favor, intenta de nuevo.'
+            });
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -148,8 +190,64 @@ export default function Contacto(): React.JSX.Element {
                                     ></textarea>
                                 </div>
 
-                                <button type="submit" className="btn btn-primary" style={{ width: '100%' }}>
-                                    Enviar Mensaje
+                                {/* Status Message */}
+                                {submitStatus.type !== 'idle' && (
+                                    <div
+                                        style={{
+                                            padding: '12px 16px',
+                                            borderRadius: '8px',
+                                            marginBottom: '16px',
+                                            backgroundColor:
+                                                submitStatus.type === 'success' ? 'rgba(16, 185, 129, 0.1)' :
+                                                    submitStatus.type === 'error' ? 'rgba(239, 68, 68, 0.1)' :
+                                                        'rgba(102, 126, 234, 0.1)',
+                                            borderLeft: `4px solid ${submitStatus.type === 'success' ? '#10b981' :
+                                                    submitStatus.type === 'error' ? '#ef4444' :
+                                                        '#667eea'
+                                                }`,
+                                            color:
+                                                submitStatus.type === 'success' ? '#10b981' :
+                                                    submitStatus.type === 'error' ? '#ef4444' :
+                                                        '#667eea'
+                                        }}
+                                    >
+                                        {submitStatus.type === 'loading' && '⏳ '}
+                                        {submitStatus.type === 'success' && '✅ '}
+                                        {submitStatus.type === 'error' && '❌ '}
+                                        {submitStatus.message}
+                                    </div>
+                                )}
+
+                                <button
+                                    type="submit"
+                                    className="btn btn-primary"
+                                    style={{
+                                        width: '100%',
+                                        opacity: isLoading ? 0.7 : 1,
+                                        cursor: isLoading ? 'not-allowed' : 'pointer',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        gap: '8px'
+                                    }}
+                                    disabled={isLoading}
+                                >
+                                    {isLoading ? (
+                                        <>
+                                            <span style={{
+                                                display: 'inline-block',
+                                                width: '16px',
+                                                height: '16px',
+                                                border: '2px solid rgba(255,255,255,0.3)',
+                                                borderTopColor: '#fff',
+                                                borderRadius: '50%',
+                                                animation: 'spin 1s linear infinite'
+                                            }} />
+                                            Enviando...
+                                        </>
+                                    ) : (
+                                        'Enviar Mensaje'
+                                    )}
                                 </button>
                             </form>
                         </div>

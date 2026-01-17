@@ -100,6 +100,21 @@ a {
   text-decoration: none;
 }
 
+/* Survey Link */
+.survey-link {
+  color: #14b8a6;
+  font-weight: 600;
+  text-decoration: none;
+  margin-top: 1rem;
+  display: inline-block;
+  transition: all 0.3s ease;
+}
+
+.survey-link:hover {
+  color: #2dd4bf;
+  text-shadow: 0 0 20px rgba(20, 184, 166, 0.5);
+}
+
 /* Container */
 .container {
   max-width: 1200px;
@@ -200,6 +215,16 @@ a {
 
   100% {
     background-position: 200% 0;
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
   }
 }
 
